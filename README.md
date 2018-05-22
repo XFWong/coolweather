@@ -1,2 +1,2 @@
 # coolweather
-重新用android studio学习第一行代码的教程
+用3.1.1  Android Studio重新跟学第一行代码欧酷天气
