@@ -75,7 +75,6 @@ public class ChooseAreaFragment extends Fragment {
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
-                    Log.d(TAG, "onItemClick: selectedCity: " + selectedCity);
                     queryCounties();
                 }
             }
