@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ChooseAreaFragment extends Fragment {
+    private static final String TAG = ChooseAreaFragment.class.getSimpleName();
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
     public static final int LEVEL_COUNTY = 2;
@@ -67,11 +69,13 @@ public class ChooseAreaFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d(TAG, "onItemClick: currentLevel: " + currentLevel);
                 if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = provinceList.get(position);
                     queryCities();
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
+                    Log.d(TAG, "onItemClick: selectedCity: " + selectedCity);
                     queryCounties();
                 }
             }
@@ -128,9 +132,11 @@ public class ChooseAreaFragment extends Fragment {
     }
 
     private void queryCounties() {
+        Log.d(TAG, "queryCounties: cityName: " + selectedCity.getCityName());
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
         countyList = DataSupport.where("cityid=?", String.valueOf(selectedCity.getId())).find(County.class);
+        Log.d(TAG, "queryCounties: countyList.size: " + countyList.size());
         if (countyList.size() > 0) {
             dataList.clear();
             for (County county : countyList) {
@@ -142,7 +148,8 @@ public class ChooseAreaFragment extends Fragment {
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
-            String address = "http://guolin.tech/api/china" + provinceCode + "/" + cityCode;
+            String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
+            Log.d(TAG, "queryCounties: address: " + address);
             queryFromServer(address, "county");
         }
     }
