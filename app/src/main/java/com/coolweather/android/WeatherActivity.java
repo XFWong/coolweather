@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
+    private static final String TAG = WeatherActivity.class.getSimpleName();
     private ScrollView weatherLayout;
     private TextView titleCity;
     private TextView titleUpdateTime;
@@ -101,8 +103,8 @@ public class WeatherActivity extends AppCompatActivity {
             loadBingPic();
         }
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        navButton = (Button)findViewById(R.id.nav_button);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (Button) findViewById(R.id.nav_button);
         navButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +138,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     public void requestWeather(final String weatherId) {
+        Log.d(TAG, "requestWeather: weatherId: " + weatherId);
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=c86a40dd18ba4ef58fb55f8448b27ce5";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
